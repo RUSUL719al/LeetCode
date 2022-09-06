@@ -1,5 +1,7 @@
 package HOOT100;
 
+import java.util.Arrays;
+
 /**
  * 整数数组的一个 排列  就是将其所有成员以序列或线性顺序排列。
 例如，arr = [1,2,3] ，以下这些都可以视作 arr 的排列：[1,2,3]、[1,3,2]、[3,1,2]、[2,3,1] 。
@@ -35,9 +37,7 @@ public class nextPermutation {
     public static void main(String[] args) {
         int[] nums = {3,2,1};
         int[] result = getNextPermutation1(nums);
-        for(int num : result){
-            System.out.print(" " + num);
-        }
+        System.out.print(Arrays.toString(result));
     }
     public static int[] getNextPermutation1(int[] nums) {
         int i = nums.length - 2;
