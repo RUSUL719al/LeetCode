@@ -38,7 +38,7 @@ public class longestConsecutive {
         }
         int maxLen = 0;
         for(int num : hash){
-            //找出集合中最小连续数字
+            //找出集合中连续数组中的最小数字
             if(!hash.contains(num-1)){
                 int y = num;
                 //依次枚举是否有比当前数大1的数字

@@ -24,8 +24,8 @@ package HOOT100;
 public class findTargetSumWays {
     static int count = 0;
     public static void main(String[] args) {
-        int[] arrs = {1,2,3,4,5};
-        int result = 5;
+        int[] arrs = {0,0,0,0,0,0,0,0,1};
+        int result = 1;
         //int res = process1(arrs, 0, result);
         int res = process3(arrs, result);
         System.out.println("The Result Is : " + res);
@@ -64,8 +64,8 @@ public class findTargetSumWays {
         /**
          * 例：  arrs = [1,2,3,4,5], result = 5（若题目中标识有正有负，先把所有负数转正，应为加 + 和加 - 不影响数字的正负性质）
          * 一种组合：-1 + 2 + 3 - 4 + 5 = 5
-         * 组合中 正数组合P{2,3,5} 负数组合N{1,4} 全员总和 =15
-         * P - N = result   等式两边相加 S 后得 P + N + S = result + S  ->  P - N + P + N = result + P + N  -> 2P = result + S  -> P = (result+ S)/2
+         * 组合中 正数组合P{2,3,5} 负数组合N{1,4} 全员总和 S=15
+         * P - N = result   等式两边相加 S 后得 P - N + S = result + S  ->  P - N + P + N = result + P + N  -> 2P = result + S  -> P = (result+ S)/2
          * 由公式可得等式左边 P 是正数组合，等式右边是目标值和全员总和相加的一半。带入例子  P = （5 + 15）/2  -> P = 10  
          * 此结果的意思：在给出的元素中随意组合元素相加结果等于10的可能性有多少个就是本题答案
          * 优化点：优化前题目的数据规模是 -S ~ +S（全员取负到全员取正），优化后数据规模是 0 ~ +S（目标值最多跟S一样，如果大于S本体无解）
@@ -78,7 +78,7 @@ public class findTargetSumWays {
             sum += num;
         }
         //目标值大于求和    或   求和数 和 目标值的奇偶性不一致的话返回0 ， 否则调用动态规划
-        return result > sum || ((sum & 1)^(result & 1)) !=0 ? 0 : dp(arrs, (result+sum)>>1);
+        return Math.abs(result) > Math.abs(sum) || ((sum & 1)^(result & 1)) !=0 ? 0 : dp(arrs, (result+sum)>>1);
         
     }
 
@@ -97,13 +97,15 @@ public class findTargetSumWays {
     public static int dp(int[] nums, int target) {
         //因为下标是从0开始，因此声明二维数组时列数加一
         int[][] dp = new int[nums.length][target+1];
-
+        //初始nums[0~0]凑出0的方法数为1
         dp[0][0] = 1;
-        for(int n =1 ; n < target; n++){
-            if(n == nums[0]){
-                dp[0][n] =  1;
+        //nums[0~0]特殊情况处理（如果nums[0]为0，则增加一个方法数）
+        for(int i = 0 ; i <= target; i++){
+            if(i == nums[0]){
+                dp[0][i] +=  1;
             }
         }
+        
         for(int i = 1; i < nums.length; i++){
             for(int j = 0; j <= target; j++){
                 if(nums[i] > j){

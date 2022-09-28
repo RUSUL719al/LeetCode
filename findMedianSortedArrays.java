@@ -18,34 +18,37 @@ package HOOT100;
 public class findMedianSortedArrays {
     public static void main(String[] args) {
         int [] nums1 = {1,2};
-        int [] nums2 = {3,4,5,6,7,8};
+        int [] nums2 = {3,4};
         double result = findMedianSortedArray2(nums1, nums2);
+        //double result = findMedianSortedArray1(nums1, nums2);
         System.out.println("The Result Is : " + result);
     }
-    //暴力解法，通过归并排序方式合并两个数组并开辟新总数组，再取中位数
+
+    //暴力解法，合并两个数组(开辟新的数组空间)，再取中位数
     public static double findMedianSortedArray1(int[] nums1,int[] nums2) {
          int m = nums1.length;int n = nums2.length;
          int[] nums = new int[m + n];
          //边界判断
         if (m == 0) {
-            if (n % 2 == 0) {
-                return (nums2[n / 2 - 1] + nums2[n / 2]) / 2.0;
-            } else {
-                return nums2[n / 2];
-            }
+            return (n & 1) == 1 ? nums2[n/2] : (nums2[n/2 - 1] + nums2[n/2]) / 2.0;
+            // if (n % 2 == 0) {
+            //     return (nums2[n / 2 - 1] + nums2[n / 2]) / 2.0;
+            // } else {
+            //     return nums2[n / 2];
+            // }
         }
-        //边界判断
         if (n == 0) {
-            if (m % 2 == 0) {
-                return (nums1[m / 2 - 1] + nums1[m / 2]) / 2.0;
-            } else {
-                return nums1[m / 2];
-            }
+            return (m & 1) == 1 ? nums1[m/2] : (nums1[m/2 - 1] + nums1[m/2]) / 2.0;
+            // if (m % 2 == 0) {
+            //     return (nums1[m / 2 - 1] + nums1[m / 2]) / 2.0;
+            // } else {
+            //     return nums1[m / 2];
+            // }
         }
         int count = 0;
         int i = 0, j = 0;
-        //遍历完两个数组
-        while (count != (m + n)) {
+        //遍历两个数组
+        while (count <= (m + n)) {
             if (i == m) {
                 while (j != n) {
                     nums[count++] = nums2[j++];
@@ -58,18 +61,22 @@ public class findMedianSortedArrays {
                 }
                 break;
             }
-            if (nums1[i] < nums2[j]) {
-                nums[count++] = nums1[i++];
-            } else {
-                nums[count++] = nums2[j++];
-            }
+            nums[count++] = nums1[i] < nums2[j] ? nums1[i++] : nums2[j++];
+            // if (nums1[i] < nums2[j]) {
+            //     nums[count++] = nums1[i++];
+            // } else {
+            //     nums[count++] = nums2[j++];
+            // }
         }
-        if (count % 2 == 0) {
-            return (nums[count / 2 - 1] + nums[count / 2]) / 2.0;
-        } else {
-            return nums[count / 2];
-        }
+        return (count & 1) == 1 ? nums[count/2] : (nums[count/2 - 1] + nums[count/2]) / 2.0;
+        // if (count % 2 == 0) {
+        //     return (nums[count / 2 - 1] + nums[count / 2]) / 2.0;
+        // } else {
+        //     return nums[count / 2];
+        // }
     }
+
+
     //通过归并排序方式合并两个数组但不开辟新数组，再取中位数
     public static double findMedianSortedArray2(int[] nums1,int[] nums2) {
         int m = nums1.length;
@@ -94,14 +101,14 @@ public class findMedianSortedArrays {
      * 通过获取第k小数的思路，以递归的方式找出中位数
      * 思路：假设len长度的有序数组nums，如果长度为奇数则它的中位数=nums[len/2];如果长度为偶数则它的中位数=(nums[len/2 -1] + nums[len/2])/2
      *       此时可以把 len/2 看作 k ，并寻找数组中第k个元素。
-     *       当前有两个长度分别为m1, m2的有序数组nums1 , nums2。把k分给两个数组寻找个数组的第 k/2 个元素，比较两个结果元素。
+     *       当前有两个长度分别为m1, m2的有序数组nums1 , nums2。把k分给两个数组寻找两个数组的第 k/2 个元素，比较两个结果元素。
      *       如果nums1[k/2] < nums2[k/2],则说明第k元素不可能在(nums[0]~nums[k/2])范围内。因此不再考虑此范围的元素。用递归的方式在剩下的元素中寻找第(k - k/2)个元素 
      * @param nums1
      * @param nums2
      * @return
      */
     public static double findMedianSortedArray3(int[] nums1,int[] nums2) {
-        int n = nums1.length;
+    int n = nums1.length;
     int m = nums2.length;
     int left = (n + m + 1) / 2;
     int right = (n + m + 2) / 2;
@@ -113,11 +120,11 @@ public class findMedianSortedArrays {
     public static int getKth(int[] nums1,int left1,int right1,int[] nums2,int left2,int right2,int k) {
         int len1 = (right1 - left1) + 1;int len2 = (right2 - left2) + 1;
         //让 len1 的长度小于 len2，这样就能保证如果有数组空了，一定是 len1 
-        if (len1 > len2){
-            return getKth(nums2, left2, right2, nums1, left1, right1, k);
-        } 
         if (len1 == 0){
             return nums2[left2 + k - 1];
+        } 
+        if (len2 == 0){
+            return nums1[left1 + k - 1];
         }
         if (k == 1){
             return Math.min(nums1[left1], nums2[left2]);
