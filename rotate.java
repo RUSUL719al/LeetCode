@@ -43,8 +43,8 @@ public class rotate {
      * @param matrix 矩阵参数
      * @param a 矩阵左上角元素的横坐标
      * @param b 矩阵左上角元素的纵坐标
-     * @param c 矩阵左下角元素的横坐标
-     * @param d 矩阵左下角元素的纵坐标
+     * @param c 矩阵右下角元素的横坐标
+     * @param d 矩阵右下角元素的纵坐标
      */
     public static void func(int[][] matrix, int a, int b, int c, int d) {
         //循环次数
