@@ -66,7 +66,7 @@ public class isValidBST {
             return true;
         }
         //访问左子树
-        if(!IsValidBST1(head.left)){
+        if(!IsValidBST2(head.left)){
             return false;
         }
         //判断当前元素（即中序遍历的第一个元素开始比较）
@@ -74,6 +74,6 @@ public class isValidBST {
             return false;
         }
         pre = head.val;
-        return IsValidBST1(head.right);
+        return IsValidBST2(head.right);
     }
 }
